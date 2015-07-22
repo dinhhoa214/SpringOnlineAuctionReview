@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>Sign In</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/auction.custom.css}" />
+</head>
+
+<body class="body-login" onload='document.f.j_username.focus();'>
+	 
+	<form class="form-narrow form-horizontal" name='f' method='POST'>
+		<div class="form-group">
+			<div th:if="${errorLogin}" class="error">Email or password incorrect !</div><hr/>
+			</div>	
+		<div class="form-group">
+			<label ><i class="fa fa-user"></i> <b>Email Address</b></label> 
+	 		<input class="form-control"  type="text" name="username" placeholder="Email Address" />
+		</div>
+		<div class="form-group">
+			<label ><i class="fa fa-lock"></i> <b>Password</b></label>
+			<input class="form-control" type="password" name="password" placeholder="Password" />
+		</div>
+		<div class="form-group">
+			  <input id="remember_me" name="remember-me" type="checkbox"/>
+					<label for="remember_me">Remember me</label>
+			  <p class="text-right">
+				<button type="submit" class="btn btn-success">Login</button>
+			</p>
+			<hr/> 
+			<p>Not a member? <a th:href="register">Register here</a></p>
+		</div>
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
+	</form> 
+						
+</body>
+</html>

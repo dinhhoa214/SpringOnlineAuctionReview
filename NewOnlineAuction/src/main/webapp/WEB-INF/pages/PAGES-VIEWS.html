@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Online Auction Home Page</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/auction.custom.css}" />
+<!-- Custom Fonts -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/font-awesome.min.css}" />
+<!-- Bootstrap validation -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrapValidator.min.css}" />
+	<!-- Bootstrap select -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrap-select.min.css}" />
+<script th:src="@{/resources/js/jquery-latest.min.js}"> </script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap-hover-dropdown.js}"></script>
+<link rel="stylesheet"
+	th:href="@{/resources/css/bootstrap-datetimepicker.min.css}" />
+<script type="text/javascript" th:src="@{/resources/js/moment.js}"></script>
+<script type="text/javascript"
+	th:src="@{/resources/js/bootstrap-datetimepicker.min.js}"></script>
+	<!-- JS select -->
+<script type="text/javascript"
+	th:src="@{/resources/js/bootstrap-select.min.js}"></script>
+<script> 
+		var urlApi = "@{/item}";
+		$(document).ready(function() {
+			$('.js-activated').dropdownHover().dropdown();
+		});
+	</script>
+<!-- Bootstrap Validation -->
+<script th:src="@{/resources/js/bootstrapValidator.min.js}"></script>
+</head>
+<body>
+	<!-- <div th:replace="fragments/header :: ${#authentication.principal} ? 'header' : 'headeruser' "> </div> -->
+	<div
+		th:replace="fragment/header :: ${#authorization.expression('hasRole(''ROLE_USER'')')} ? 'headeruser' : 'header'"></div>
+	<div th:replace="${pageview} :: content">Main content</div>
+	<div th:replace="fragment/footer :: footer"></div>
+</body>
+</html>

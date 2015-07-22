@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Online Auction Home Page</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/auction.custom.css}" />
+<!-- Custom Fonts -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/font-awesome.min.css}" />
+<!-- Bootstrap validation -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrapValidator.min.css}" />
+<script th:src="@{/resources/js/jquery-latest.min.js}"> </script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap-hover-dropdown.js}"></script>
+<script> 
+		$(document).ready(function() {
+			$('.js-activated').dropdownHover().dropdown();
+		});
+	</script>
+<!-- Bootstrap Validation -->
+<script th:src="@{/resources/js/bootstrapValidator.min.js}"></script>
+</head>
+<body>
+	<!-- Fixed navbar Header-->
+	<nav class="navbar navbar-default ">
+
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+				aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" th:href="@{/index}">Logo Online Auction</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a th:href="@{/index}">Home</a></li>
+				<li><a href="#about">About us</a></li>
+				<li><a href="#contact">News</a></li>
+
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a th:href="@{/account/login}">Login</a></li>
+				<li class="active"><a href="#">Register</a></li>
+			</ul>
+			<!-- /.navbar-top-links -->
+		</div>
+		<!--/.nav-collapse -->
+
+	</nav>
+	<div class="container">
+		<!-- Content -->
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6">
+			<h2>
+				<strong> REGISTER FORM </strong>
+			</h2> 
+			<form id="registerForm" th:object="${account}"
+				th:action="@{/register}" enctype="multipart/form-data" method="post">
+				<div class="form-group">
+					<label>User Name</label> <input type="text" class="form-control"
+						th:field="*{userName}" />
+				</div>
+				<div class="form-group">
+					<label>Email</label> <input type="text" class="form-control"
+						th:field="*{email}" />
+
+				</div>
+				<div class="form-group">
+					<label>Information</label>
+					<textarea class="form-control" rows="2.5" placeholder="Address"
+						th:field="*{iformation}"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Password</label> <input
+						type="password" class="form-control" th:field="*{password}"
+						placeholder="Password" />
+				</div>
+				<div class="form-group">
+					<label>Re- password</label> <input type="password"
+						class="form-control" name="confirmPassword"
+						data-fv-identical="true" data-fv-identical-field="password"
+						data-fv-identical-message="The password and its confirm are not the same" />
+				</div>
+				<div class="form-group"> 
+					<label for="exampleInputFile">File Image</label> 
+					<input type="file" th:field="*{image}" />
+					<p class="help-block">Choose image for User Avatar</p> 
+			 		
+				</div> 
+				<button type="submit" class="btn btn-success">Submit</button> 
+			</form>
+		</div>
+
+	</div>
+	<!-- end Container -->
+
+	<script src="js/jquery-latest.min.js"
+		th:src="@{/resources/js/jquery-latest.min.js}">
+		
+	</script>
+	<script src="js/bootstrap.min.js"
+		th:src="@{/resources/js/bootstrap.min.js}"></script>
+	<script src="js/bootstrap-hover-dropdown.js"
+		th:src="@{/resources/js/bootstrap-hover-dropdown.js}"></script>
+
+	<script>
+		// very simple to use!
+		$(document).ready(function() {
+			$('.js-activated').dropdownHover().dropdown();
+		});
+	</script>
+	<!-- Bootstrap Validation -->
+	<script src="js/bootstrapValidator.min.js"
+		th:src="@{/resources/js/bootstrapValidator.min.js}"></script>
+	<script type="text/javascript">
+$(document).ready(function() {
+    $('#registerForm')
+        .bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                userName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The user name is required and cannot be empty'
+                        },
+                        stringLength: {
+                            min: 3,
+                            max: 20,
+                            message: 'The username must be more than 3 and less than 20 characters long'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z0-9_\.]+$/,
+                            message: 'The username can only consist of alphabetical, number, dot and underscore'
+                        },
+                        different: {
+                            field: 'password',
+                            message: 'The username and password cannot be the same as each other'
+                        }
+                    }
+                },
+                email: {
+                    validators: {
+                        emailAddress: {
+                            message: 'The input is not a valid email address'
+                        }
+                    }
+                },
+                iformation: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The information is required and cannot be empty'
+                        }
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 1000,
+                        message: 'The information must be more than 1 and less than 1000 characters long'
+                    }
+                },  
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The password is required and cannot be empty'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 20,
+                            message: 'The password must be more than 6 and less than 20 characters long'
+                        },
+                        different: {
+                            field: 'username',
+                            message: 'The password cannot be the same as username'
+                        } 
+                    }
+                },
+                confirmPassword: {
+                    validators: {
+                        identical: {
+                            field: 'password',
+                            message: 'The password and its confirm are not the same'
+                        }
+                    }
+                },
+                image: {
+                	validators: {
+                        file: {
+                            extension: 'jpeg,png,jpg',
+                            type: 'image/jpeg,image/png,image/jpg',
+                            maxSize: 10*1024*1024,
+                            message: 'Please choose a JPEG,PNG,JPG file with a size less than 10M.'
+                        }
+                    }
+                } 
+            }
+        })
+        .on('error.field.bv', function(e, data) {
+            var messages = data.bv.getMessages(data.field);
+            $('#errors').find('li[data-bv-for="' + data.field + '"]').remove();
+            for (var i in messages) {
+                $('<li/>').attr('data-bv-for', data.field).html(messages[i]).appendTo('#errors');
+            }
+            $('#errors').parents('.form-group').removeClass('hide');
+        })
+        .on('success.field.bv', function(e, data) {
+            $('#errors').find('li[data-bv-for="' + data.field + '"]').remove();
+        })
+        .on('success.form.bv', function(e) {
+            $('#errors')
+                .html('')
+                .parents('.form-group').addClass('hide');
+        });
+});
+</script>
+</body>
+</html>

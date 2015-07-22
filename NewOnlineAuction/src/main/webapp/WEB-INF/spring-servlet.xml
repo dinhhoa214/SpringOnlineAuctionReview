@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:oxm="http://www.springframework.org/schema/oxm" 
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:util="http://www.springframework.org/schema/util" 
+	xmlns="http://www.springframework.org/schema/security"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+http://www.springframework.org/schema/tx 
+http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+http://www.springframework.org/schema/oxm
+http://www.springframework.org/schema/oxm/spring-oxm-4.1.xsd 
+http://www.springframework.org/schema/util 
+http://www.springframework.org/schema/util/spring-util-4.1.xsd 
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.1.xsd
+http://www.springframework.org/schema/mvc
+http://www.springframework.org/schema/mvc/spring-mvc.xsd
+http://www.springframework.org/schema/data/jpa 
+http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd
+http://www.springframework.org/schema/task
+http://www.springframework.org/schema/task/spring-task-3.0.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+
+
+	<context:property-placeholder location="classpath:/application.properties" />
+	<!-- telling container to take care of annotations stuff -->
+	<context:annotation-config />
+
+
+	<!-- declaring base package -->
+	<context:component-scan base-package="com.asiantech.auction" />
+
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<mvc:annotation-driven />
+
+
+	<!-- declare thymeleaf Resolver -->
+	<beans:bean id="templateResolver"
+		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+		<beans:property name="prefix" value="/WEB-INF/pages/" />
+		<beans:property name="suffix" value=".html" />
+		<beans:property name="characterEncoding" value="UTF-8" />
+		<beans:property name="templateMode" value="HTML5" />
+		<beans:property name="cacheable" value="false" />
+	</beans:bean>
+	
+	
+	<!-- Email support -->
+	<beans:bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<beans:property name="host" value="smtp.gmail.com" />
+		<beans:property name="port" value="587" />
+		<beans:property name="username" value="dinhhoa.vta@gmail.com" />
+		<beans:property name="password" value="dinhhoa123!@#" />
+
+		<beans:property name="javaMailProperties">
+			<beans:props>
+				<beans:prop key="mail.smtp.auth">true</beans:prop>
+				<beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+	
+	<!-- Task support -->
+	<task:annotation-driven/>
+
+	<beans:bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+		<beans:property name="templateResolvers" ref="templateResolver" />
+		<beans:property name="additionalDialects">
+			<beans:set>
+				<!-- Note the package would change to 'springsecurity3' if you are using 
+					that version -->
+				<beans:bean
+					class="org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect" />
+			</beans:set>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+		<beans:property name="templateEngine" ref="templateEngine" />
+	</beans:bean>
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+
+	<!-- declare datasource bean -->
+	<beans:bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<beans:property name="url"
+			value="jdbc:mysql://localhost:3306/online_auction" />
+		<beans:property name="username" value="root" />
+		<beans:property name="password" value="qaed1234" />
+	</beans:bean>
+	<beans:bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<beans:property name="packagesToScan" value="com.asiantech.auction.entity" />
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+	</beans:bean>
+
+	<beans:bean id="jpaVendorAdapter"
+		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<beans:property name="database" value="MYSQL" />
+		<beans:property name="generateDdl" value="true" />
+		<beans:property name="showSql" value="false" />
+		<beans:property name="databasePlatform"
+			value="org.hibernate.dialect.MySQL5Dialect" />
+	</beans:bean>
+
+	<beans:bean id="transactionManager"
+		class="org.springframework.orm.jpa.JpaTransactionManager">
+		<beans:property name="entityManagerFactory" ref="entityManagerFactory" />
+	</beans:bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<jpa:repositories base-package="com.asiantech.auction.repository" />
+
+
+	<authentication-manager>
+		<authentication-provider user-service-ref="accountService">
+			<password-encoder ref="encoder" />
+		</authentication-provider>
+	</authentication-manager>
+
+	<global-method-security secured-annotations="enabled" />
+
+	<http auto-config="true" use-expressions="true">
+		<!-- Security zones -->
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/user/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/item/**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/resources/**" access="permitAll" />
+		<!-- Login pages -->
+		<form-login login-processing-url="/account/login"
+			login-page="/account/login" authentication-failure-url="/account/login?error=1" />
+		<remember-me token-validity-seconds="2419200" key="springwebflowkey" />
+		<logout logout-success-url="/index" logout-url="/account/logout" />
+		<csrf disabled="true" />
+	</http> <!-- 2419200 -->
+
+
+	<beans:bean id="encoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	</beans:bean>
+
+</beans:beans>  

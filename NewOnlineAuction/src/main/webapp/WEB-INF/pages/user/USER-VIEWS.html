@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Online Auction User Page</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrap.min.css}" />
+	<!-- Custom Fonts -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/font-awesome.min.css}" />
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/auction.custom.css}" />
+
+<!-- Bootstrap validation -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrapValidator.min.css}" />
+<script th:src="@{/resources/js/jquery-latest.min.js}"> </script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap-hover-dropdown.js}"></script>
+<script> 
+		$(document).ready(function() {
+			$('.js-activated').dropdownHover().dropdown();
+		});
+	</script>
+<!-- Bootstrap Validation -->
+<script th:src="@{/resources/js/bootstrapValidator.min.js}"></script>
+</head>
+<body>
+	<div th:replace="templates/header.normaluser :: header"></div>
+	<div th:replace="${pageview} :: content">Main content</div>
+	<div th:replace="templates/footer :: footer"></div>
+</body>
+</html>

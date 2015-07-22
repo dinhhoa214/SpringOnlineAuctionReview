@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+</head>
+<body>
+
+	<div th:fragment="content">
+		<div class="container">
+
+
+			<!-- Content Category-->
+			<div class="row">
+				<!-- News Auction -->
+
+				<!-- Bread crumb -->
+				<ol class="breadcrumb">
+					<li><a th:href="@{/index}">Home</a></li>
+					<li class="active"><span th:text="${category}"> </span>
+					</li>
+				</ol>
+				<!-- <div class="bg-info">
+				<blockquote>
+				  <p class="text-justify text-capitalize"> Categories Browsing </p>
+				</blockquote>  
+			</div> -->
+				<strong> <span th:text="|Category Name: ${category} .|">
+				</span> <!-- ${item.itemTitle} -->
+				</strong> <br /> <span
+					th:text="|There were ${categoriesItem.size()} items Auction in ${category}.|"></span>
+				<nav class="navbar-right">
+					<ul class="pagination pagination-sm">
+						<li><a href="#">First</a></li>
+						<li><a href="#">Prev</a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">5</a></li>
+						<li><a href="#">Next</a></li>
+						<li><a href="#">Last</a></li>
+					</ul>
+				</nav>
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Item</th>
+							<th>Bids</th>
+							<th>Current Price</th>
+							<th>Start</th>
+							<th>End</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-th-each="us,i : ${categoriesItem}">
+							<td data-th-text="${i.count}">1</td>
+							<td><a th:href="@{|/item/${us.itemId}|}"><span
+									th:text="${us.itemTitle}"></span></a></td>
+							<td data-th-text="${us.bids}">Dang su dung</td>
+							<td data-th-text="${us.currentBid}">Dang su dung</td>
+							<td data-th-text="${us.bidStartDate}">false</td>
+							<td data-th-text="${us.bidEndDate}">false</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- end Container -->
+		<!-- inclde footer -->
+	</div>
+</body>
+</html>

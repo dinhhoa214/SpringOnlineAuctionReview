@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+</head>
+<body>
+
+	<div th:fragment="content">
+		<div class="container">
+			<!-- Content Category-->
+			<div class="row">
+				<!-- Bread crumb -->
+				<ol class="breadcrumb">
+					<li><a th:href="@{/index}">Home</a></li>
+					<li><a th:href="@{/category/} + ${item.category.name}"
+						th:text=" ${item.category.name} "> Category</a></li>
+					<li class="active"><span th:text=" ${item.itemTitle} ">
+					</span></li>
+				</ol>
+				<div class="col-sm-1"></div>
+				<div class="col-sm-4">
+					<label th:text="|${item.itemTitle}|"> </label>
+					<p>
+						<strong>Description: </strong><span
+							th:text=" ${item.itemDescription} "> </span>
+					</p>
+					<strong>Seller:</strong> <a
+						th:href="@{/user/profile/} + ${item.createrId.email}"
+						th:text="${item.createrId.userName}"> dinhhoa.vta </a>
+					<p />
+					<input type='hidden' name='rating'
+						th:value="${item.createrId.totalRating}" /> 
+					<input type='hidden'
+						id='URL' th:value="@{/item/}+${item.itemId}" />
+
+					<div class='starrr'
+						data-th-attr="data-user=${item.createrId.email}"
+						data-numstars='10' data-connected-input='rating'></div>
+					<span th:text="|(${#numbers.formatDecimal(item.createrId.totalRating, 0, 'COMMA', 1, 'POINT')} /10)|"> </span> 
+					<p>
+						<span class='your-choice-was' style='display: none;'> Your
+							rating was <span class='choice'></span>.
+						</span>
+					</p>
+
+
+
+					<img th:src="@{|/${item.itemImage}|}" class="img-thumbnail"
+						style="width: 300px; height: 250px" />
+
+				</div>
+				<div class="col-sm-6">
+
+					<br /> <br /> <br />
+					<p>
+						<strong>End: <span id="clock" data-countdown="2017/01/01"></span>
+						</strong>
+					</p>
+
+					<!-- <span th:text="| Item ${item.itemTitle} |"> </span> ${item.itemTitle} -->
+
+
+					<form id="bidForm" th:action="@{bidItem} + ${item.itemId}"
+						th:object="${bid}" method="post" class="form-horizontal">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th colspan="2" class="panel-heading">Item Details</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Currently: <strong><span
+											th:text="${#numbers.formatDecimal(item.currentBid, 0, 'POINT', 0, 'POINT')}"></span></strong> VND
+									</td>
+									<td>Start Bid: <span th:text="|${#numbers.formatDecimal(item.miniumBid, 0, 'POINT', 0, 'POINT')}|"></span>
+										VND
+									</td>
+								</tr>
+								<tr>
+									<td>Start: <span th:text=" ${item.bidStartDate} "></span></td>
+									<td>Bids: <span th:text=" ${item.bids} "></span>
+									</td>
+								</tr>
+								<tr>
+									<td>End: <span th:text=" ${item.bidEndDate} "></span></td>
+								</tr>
+								<tr>
+									<td>Bid Imcrement: <span th:text="|${#numbers.formatDecimal(item.bidIncremenet, 0, 'POINT', 0, 'POINT')}|">VND</span></td>
+									<td>Minium Bid: <span th:text="|${#numbers.formatDecimal(item.miniumBid, 0, 'POINT', 0, 'POINT')} VND|">VND</span></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<div class="form-group">
+											<label class="col-sm-3 control-label">Your Bid:</label>
+											<div class="col-sm-6">
+												<input type="text" class="form-control" th:field="*{amount}"
+												placeholder="VND" />
+											</div>
+											<div class="col-sm-3">
+												<input type="submit" value="BID"
+											id="myBtnBID" class="btn btn-success" />
+											</div>
+										</div>
+										<p id="message" class="error"></p>
+									</td>
+										
+								</tr>
+								
+							</tbody>
+						</table>
+					</form>
+
+					<h3>Top 10 Bids hightless</h3>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Date</th>
+								<th>Bidder</th>
+								<th>Price</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr data-th-each="us,i : ${bids}">
+								<td data-th-text="${i.count}">1</td>
+
+								<td data-th-text="${us.date}">Dang su dung</td>
+								<td data-th-text="${us.bidderId.userName}">false</td>
+								<td data-th-text="${#numbers.formatDecimal(us.amount, 0, 'POINT', 0, 'POINT')}">false</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- end Container -->
+		<!-- inclde footer -->
+
+	<script type="text/javascript">
+$(document).ready(function() {
+    $('#bidForm').bootstrapValidator({
+    	
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            amount: {
+                validators: {
+                	integer: {
+                        message: 'The value is not an integer'
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+		<script src="jquery/jquery.countdown.min.js"
+			th:src="@{/resources/jquery/jquery.countdown.min.js}">
+	</script>
+	
+	<script th:inline="javascript"> 
+	$('[data-countdown]').each(function() {
+   var $this = $(this), finalDate = [[${item.bidEndDate}]];/* set End datetime for bid */
+   $this.countdown(finalDate, function(event) {
+    $this.html(event.strftime('%D Days %H hours, %M minutes, %S seconds.'));
+   });
+   $this.on('finish.countdown', function(event) {
+	   document.getElementById("myBtnBID").disabled = true;
+	   document.getElementById("message").innerHTML =
+	        "Auction ended. The user: " + [[${bidtop.bidderId.userName}]] + " is winter ! Congratulation!!!";
+	   var url = document.getElementById("URL").value + '/endAuction' ; 
+       var xmlhttp;
+       if (window.XMLHttpRequest)
+	        {// code for IE7+, Firefox, Chrome, Opera, Safari
+	        xmlhttp=new XMLHttpRequest();
+	        }
+     	else
+	        {// code for IE6, IE5
+	        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	        }
+       xmlhttp.open("POST", url, true); 
+       /* xmlhttp.open("GET","@{/ratingUser/"+value+"?emailRater="+emailRater+"}",true);  */
+       xmlhttp.send();
+   });
+  });
+    </script>
+		<script src="js/bootstrap.min.js"
+			th:src="@{/resources/js/bootstrap.min.js}"></script>
+		<script src="js/bootstrap-hover-dropdown.js"
+			th:src="@{/resources/js/bootstrap-hover-dropdown.js}"></script>
+		<script src="js/bootstrap-rating-input.min.js"
+			th:src="@{/resources/js/bootstrap-rating-input.min.js}"></script>
+		<script th:src="@{/resources/js/starrr.min.js}"></script>
+		<script>
+		// very simple to use!
+		$(document).ready(function() {
+			$('.js-activated').dropdownHover().dropdown();
+		});
+	</script>
+		<script th:inline="javascript"> 
+    $('.starrr:eq(0)').on('starrr:change', function(e, value){
+    	alert(urlApi);
+      if (value) {
+        $('.your-choice-was').show();
+        $('.choice').text(value);
+        var emailRater = $(this).data('user');  
+        var url = document.getElementById("URL").value + '/ratingUser/' + value; 
+        var xmlhttp;
+        if (window.XMLHttpRequest)
+	        {// code for IE7+, Firefox, Chrome, Opera, Safari
+	        xmlhttp=new XMLHttpRequest();
+	        }
+      	else
+	        {// code for IE6, IE5
+	        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	        }
+        xmlhttp.open("GET",url+"?emailRater="+emailRater,true); 
+        xmlhttp.send();
+        
+      } else {
+        $('.your-choice-was').hide();
+      }
+    });
+   
+  </script>
+	</div>
+</body>
+</html>

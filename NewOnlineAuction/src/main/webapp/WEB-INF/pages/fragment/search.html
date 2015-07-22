@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+</head>
+<body>
+	<div th:fragment="search_bar">
+		<div class="container">
+			<div class="row top-row">
+				<div class="col-md-2">
+					<div class="btn-group">
+						<button class="btn dropdown-toggle" data-toggle="dropdown"
+							data-hover="dropdown" data-delay="1000">
+							<strong>By Categories</strong> <b class="caret"></b>
+						</button>
+						<ul class="dropdownwidth dropdown-menu ">
+							<li role="presentation" class="dropdown-header">List of
+								Categories</li>
+							<li th:each="cate : ${categories}" class="dropdown-header-cate">
+								<a tabindex="-1" th:href="@{/category/} + ${cate.name}"
+								th:text="${cate.name}">Laptop</a>
+							</li>
+							<li class="divider"></li>
+							<li><a tabindex="-1" href="#">Another</a></li>
+							<li class="divider"></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-10">
+					<form th:action="@{/searchItem}" method="post">
+
+						<div class="form-group  col-md-8">
+							<input type="text" class="form-control" name="textSearch"
+								placeholder="Search text .." />
+						</div>
+						<div class="form-group  col-md-2">
+								<select name="categories" class="form-control selectpicker" multiple="multiple" data-size="5">
+									    <option th:each="cate : ${categories}" 
+									    th:value="${cate.name}"
+									    th:text="${cate.name}">Apple</option>
+								</select>
+								
+						</div>
+						<div class="form-group  col-md-2">
+							<button type="submit" class="form-control btn btn-primary">Search</button>
+
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- Xong header -->
+		</div>
+	</div>
+</body>
+</html>

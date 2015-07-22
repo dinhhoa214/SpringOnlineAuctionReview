@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">	
+<head>
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="container">
+			<!-- include header -->
+
+			<!-- Content -->
+			<div class="row">
+				<!-- News Auction -->
+				<div class="bg-info">
+					<blockquote>
+						<p class="text-justify text-capitalize">News Auction</p>
+					</blockquote>
+				</div>
+				<div class="col-md-2" th:each="item : ${newAuction}">
+					<a th:href="@{|/item/${item.itemId}|}" th:text="${item.itemTitle}"> </a> 
+					<img th:src="@{|/${item.itemImage}|}" class="img-thumbnail" />
+					<p class="text-center" >
+						<span th:text="|at: ${item.bidStartDate}|"></span><br/>
+						<strong th:text="|${#numbers.formatDecimal(item.currentBid, 0, 'POINT', 0, 'POINT')} VND|">4.000.000 VND</strong>
+					</p>
+				</div>
+			</div>
+			<!-- End News Auction -->
+
+			<div class="row">
+				<!-- Hot Auction -->
+				<div class="bg-info">
+					<blockquote>
+						<p class="text-justify text-capitalize">Hot Auction</p>
+					</blockquote>
+				</div>
+				<div class="col-md-2" th:each="item : ${hotAuction}">
+					<a th:href="@{|/item/${item.itemId}|}" th:text="${item.itemTitle}"> </a> 
+					<img th:src="@{|/${item.itemImage}|}" class="img-thumbnail" />
+					
+					<p class="text-center" >
+						<span th:text="|Bids: ${item.bids}|"></span><br/>
+						<strong th:text="|${#numbers.formatDecimal(item.currentBid, 0, 'POINT', 0, 'POINT')} VND|">4.000.000 VND</strong>
+					</p>
+				</div>
+			</div>
+			<!-- End Hot Auction -->
+
+			<div class="row">
+				<!-- End Auction -->
+				<div class="bg-info">
+					<blockquote>
+						<p class="text-justify text-capitalize">End Auction</p>
+					</blockquote>
+				</div>
+				<div class="col-md-2" th:each="item : ${endAuction}">
+					<a th:href="@{|/item/${item.itemId}|}" th:text="${item.itemTitle}"> </a> 
+					<img th:src="@{|/${item.itemImage}|}" class="img-thumbnail" />
+					<p class="text-center" >
+						<span th:text="|Winner: ${item.winnerId.userName}|"></span><br/>
+						<strong th:text="|${#numbers.formatDecimal(item.currentBid, 0, 'POINT', 0, 'POINT')} VND|">4.000.000 VND</strong>
+					</p>
+				</div>
+			</div>
+		</div>
+		<!-- end Container -->
+	</div>
+</body>
+</html>

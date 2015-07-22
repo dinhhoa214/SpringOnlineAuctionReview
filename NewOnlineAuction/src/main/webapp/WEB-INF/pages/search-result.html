@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">	
+<head>
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="container">
+			<!-- include header -->
+
+			<!-- Content -->
+			<div class="row">
+				<!-- Auction -->
+				<div class="bg-info">
+					<blockquote>
+						<p class="text-justify">Search Result</p>
+						<footer><span th:text="|There were ${itemSearch.size()} items Auctioning .|"></span></footer>
+					</blockquote>
+				</div>
+				<div class="col-md-2" th:each="item : ${itemSearch}">
+					<a th:href="@{|/item/${item.itemId}|}" th:text="${item.itemTitle}"> </a> 
+					<img th:src="@{|/${item.itemImage}|}" class="img-thumbnail" />
+					<p class="text-center" >
+						<span th:text="|at: ${item.bidStartDate}|"></span><br/>
+						<strong th:text="|${#numbers.formatDecimal(item.currentBid, 0, 'POINT', 0, 'POINT')} VND|">4.000.000 VND</strong><br/>
+						<span th:text="|Category: ${item.category.name}|" class="error"></span>
+					</p>
+					<hr/>
+				</div>
+			</div>
+			<!-- End Auction -->
+
+			
+		</div>
+		<!-- end Container -->
+	</div>
+</body>
+</html>

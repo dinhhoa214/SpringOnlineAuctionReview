@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="container">
+			<!-- Content -->
+			<div class="col-sm-8 col-sm-offset-2">
+				<div class="page-header">
+					<h2>User profile</h2>
+				</div>
+				<ul class="nav nav-tabs">
+					<li><a aria-expanded="true" href="#address-tab"
+						data-toggle="tab"> Change password <i class="fa"></i></a></li>
+					<li class="active"><a aria-expanded="false" href="#info-tab"
+						data-toggle="tab"> Information <i class="fa"></i></a></li>
+				</ul>
+				<button style="display: none; width: 0px; height: 0px;"
+					class="bv-hidden-submit" type="submit"></button>
+				<div class="tab-content">
+					<div class="tab-pane active" id="info-tab"
+						style="margin-top: 20px;">
+						<div class="col-sm-6">
+							User Name: <label th:text="${account.userName}"> </label> <br />
+							Email: <label th:text="${account.email}"> </label> <br />
+							Information: <label th:text="${account.iformation}"> </label> <br />
+							Role: <label th:text="${account.Role}"> </label> <br /> Total
+							Rating: <label th:text="${account.totalRating}"> </label><br />
+						</div>
+						<div class="col-sm-6">
+							<img th:src="@{|/${account.image}|}" class="img-thumbnail"
+								style="width: 100px; height: 100px;" /> <br />
+							<form id="profileForm" action="changeAvatar"
+								enctype="multipart/form-data" method="post">
+								<input type="file" name="image" />
+								<p class="help-block">Choose image for Change User Avatar</p>
+								<button type="submit" class="btn btn-success">Update</button>
+							</form>
+						</div>
+					</div>
+					<div class="tab-pane" id="address-tab" style="margin-top: 20px;">
+						<div class="col-sm-6">
+							<form id="changePassForm" action="changePass" method="post">
+								<div class="form-group">
+									<label> Current- Password</label> <input type="password"
+										class="form-control" name="oldPassword" placeholder="Password" />
+								</div>
+								<div class="form-group">
+									<label>New- password</label> <input type="password"
+										class="form-control" name="confirmPassword"
+										data-fv-identical="true" data-fv-identical-field="password"
+										data-fv-identical-message="The new password and its confirm are not the same" />
+								</div>
+								<div class="form-group">
+									<label>Re- New password</label> <input type="password"
+										class="form-control" name="confirmPassword2"
+										data-fv-identical="true" data-fv-identical-field="password"
+										data-fv-identical-message="The password and its confirm are not the same" />
+								</div>
+								<button type="submit" class="btn btn-success">Update</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end Container -->
+		<script type="text/javascript">
+			$(document)
+					.ready(
+							function() {
+								$('#profileForm')
+										.bootstrapValidator(
+												{
+													message : 'This value is not valid',
+													feedbackIcons : {
+														valid : 'glyphicon glyphicon-ok',
+														invalid : 'glyphicon glyphicon-remove',
+														validating : 'glyphicon glyphicon-refresh'
+													},
+													fields : {
+														image : {
+															validators : {
+																file : {
+																	extension : 'jpeg,png,jpg',
+																	type : 'image/jpeg,image/png,image/jpg',
+																	maxSize : 10 * 1024 * 1024,
+																	message : 'Please choose a JPEG,PNG,JPG file with a size less than 10M.'
+																}
+															}
+														}
+													}
+												})
+										.on(
+												'error.field.bv',
+												function(e, data) {
+													var messages = data.bv
+															.getMessages(data.field);
+													$('#errors')
+															.find(
+																	'li[data-bv-for="'
+																			+ data.field
+																			+ '"]')
+															.remove();
+													for ( var i in messages) {
+														$('<li/>')
+																.attr(
+																		'data-bv-for',
+																		data.field)
+																.html(
+																		messages[i])
+																.appendTo(
+																		'#errors');
+													}
+													$('#errors')
+															.parents(
+																	'.form-group')
+															.removeClass('hide');
+												})
+										.on(
+												'success.field.bv',
+												function(e, data) {
+													$('#errors')
+															.find(
+																	'li[data-bv-for="'
+																			+ data.field
+																			+ '"]')
+															.remove();
+												})
+										.on(
+												'success.form.bv',
+												function(e) {
+													$('#errors')
+															.html('')
+															.parents(
+																	'.form-group')
+															.addClass('hide');
+												});
+							});
+			$(document)
+					.ready(
+							function() {
+								$('#changePassForm')
+										.bootstrapValidator(
+												{
+													message : 'This value is not valid',
+													feedbackIcons : {
+														valid : 'glyphicon glyphicon-ok',
+														invalid : 'glyphicon glyphicon-remove',
+														validating : 'glyphicon glyphicon-refresh'
+													},
+													fields : {
+														oldPassword : {
+															validators : {
+																notEmpty : {
+																	message : 'The password is required and cannot be empty'
+																},
+																stringLength : {
+																	min : 6,
+																	max : 20,
+																	message : 'The password must be more than 6 and less than 20 characters long'
+																}
+															}
+														},
+														confirmPassword : {
+															validators : {
+																notEmpty : {
+																	message : 'The password is required and cannot be empty'
+																},
+																stringLength : {
+																	min : 6,
+																	max : 20,
+																	message : 'The password must be more than 6 and less than 20 characters long'
+																},
+																different : {
+																	field : 'oldPassword',
+																	message : 'The password cannot be the same as oldPassword'
+																}
+															}
+														},
+														confirmPassword2 : {
+															validators : {
+																identical : {
+																	field : 'confirmPassword',
+																	message : 'The password and its confirm are not the same'
+																}
+															}
+														}
+													}
+												})
+										.on(
+												'error.field.bv',
+												function(e, data) {
+													var messages = data.bv
+															.getMessages(data.field);
+													$('#errors')
+															.find(
+																	'li[data-bv-for="'
+																			+ data.field
+																			+ '"]')
+															.remove();
+													for ( var i in messages) {
+														$('<li/>')
+																.attr(
+																		'data-bv-for',
+																		data.field)
+																.html(
+																		messages[i])
+																.appendTo(
+																		'#errors');
+													}
+													$('#errors')
+															.parents(
+																	'.form-group')
+															.removeClass('hide');
+												})
+										.on(
+												'success.field.bv',
+												function(e, data) {
+													$('#errors')
+															.find(
+																	'li[data-bv-for="'
+																			+ data.field
+																			+ '"]')
+															.remove();
+												})
+										.on(
+												'success.form.bv',
+												function(e) {
+													$('#errors')
+															.html('')
+															.parents(
+																	'.form-group')
+															.addClass('hide');
+												});
+							});
+		</script>
+	</div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Online Auction Register Page</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/auction.custom.css}" />
+<!-- Custom Fonts -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/font-awesome.min.css}" />
+<!-- Bootstrap validation -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/bootstrapValidator.min.css}" />
+<script th:src="@{/resources/js/jquery-latest.min.js}"> </script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap-hover-dropdown.js}"></script>
+<script> 
+		$(document).ready(function() {
+			$('.js-activated').dropdownHover().dropdown();
+		});
+	</script>
+<!-- Bootstrap Validation -->
+<script th:src="@{/resources/js/bootstrapValidator.min.js}"></script>
+</head>
+<body>
+	<!-- Fixed navbar Header-->
+	<nav class="navbar navbar-default ">
+
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+				aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" th:href="@{index}">Logo Online Auction</a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a th:href="@{index}">Home</a></li>
+				<li><a href="#about">About us</a></li>
+				<li><a href="#contact">News</a></li>
+
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a th:href="@{/account/login}">Login</a></li>
+				<li class="active"><a href="#">Register</a></li>
+			</ul>
+			<!-- /.navbar-top-links -->
+		</div>
+		<!--/.nav-collapse -->
+
+	</nav>
+	<div class="container">
+		<!-- Content -->
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6">
+			<h2>
+				<strong> REGISTER ACCOUNT SUCCESS </strong>
+			</h2>
+			<p class="text-center">We was sended email active for you at email address: <span th:text="${account.email}"></span>.	</p>		
+			<hr />
+			 
+		</div>
+
+	</div>
+	<!-- end Container -->
+
+	<script src="js/jquery-latest.min.js"
+		th:src="@{/resources/js/jquery-latest.min.js}">
+		
+	</script>
+	<script src="js/bootstrap.min.js"
+		th:src="@{/resources/js/bootstrap.min.js}"></script>
+	<script src="js/bootstrap-hover-dropdown.js"
+		th:src="@{/resources/js/bootstrap-hover-dropdown.js}"></script>
+
+	<script>
+		// very simple to use!
+		$(document).ready(function() {
+			$('.js-activated').dropdownHover().dropdown();
+		});
+	</script>
+	 
+</body>
+</html>

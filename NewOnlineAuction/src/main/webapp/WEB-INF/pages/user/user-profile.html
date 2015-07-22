@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+</head>
+<body>
+	<div th:fragment="content">
+		<div class="container">
+			<!-- Content -->
+			<div class="col-sm-10 col-sm-offset-1">
+                        <div class="page-header">
+							<h2>User profile</h2>
+						</div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#info" data-toggle="tab">Information</a>
+                                </li>
+                                <li><a href="#created" data-toggle="tab">Items created</a>
+                                </li>
+                                <li><a href="#win" data-toggle="tab">Auction win</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="info">
+                                	<hr/>
+                                    <div class="col-sm-6">
+										User Name: <label th:text="${account.userName}"> </label> <br />
+										Email: <label th:text="${account.email}"> </label> <br />
+										Information: <label th:text="${account.iformation}"> </label> <br />
+										Role: <label th:text="${account.Role}"> </label> <br /> Total
+										Rating: <label th:text="${account.totalRating}"> </label><br />
+									</div>
+			
+									<div class="col-sm-6">
+										<img th:src="@{|/${account.image}|}" class="img-thumbnail"
+											style="width: 100px; height: 100px;" /> <br />
+									</div>
+                                </div>
+                                <div class="tab-pane fade" id="created">
+                                    <div class="col-sm-12">
+										
+										<p />
+										<div class="dataTable_wrapper">
+											<table class="table table-striped">
+												<thead>
+													<tr>
+														<th>#</th> 
+														<th>Item</th>
+														<th>Image</th>
+														<th>Start</th>
+														<th>End</th>
+														<th>Minium</th>
+														<th>Status</th>
+														<th>Ended</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr data-th-each="us,i : ${items}">
+														<td data-th-text="${i.count}">1</td>
+														<td data-th-text="${us.itemTitle}">1</td> 
+														<td><img th:src="@{|/${us.itemImage}|}" class="img-thumbnail"
+															style="width: 60px; height: 30px;" /> 
+												</td>
+														<td data-th-text="${us.bidStartDate}">Dang su dung</td>
+														<td data-th-text="${us.bidEndDate}">false</td>
+														<td data-th-text="|${#numbers.formatDecimal(us.miniumBid, 0, 'POINT', 0, 'POINT')}|">false</td>
+														<td><i th:if="${(us.statusBid) == T(com.asiantech.auction.entity.Item.StatusBid).I}"
+															class="fa  fa-lock fa-fw"></i></td>
+														<td><i th:if="${us.ended} != false"
+															class="glyphicon glyphicon-ok "></i>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+											
+											<span th:text="|Total: ${items.size()} items ${account.userName} create for Bid.|"> </span>
+											<hr/>
+										</div>
+										<!-- /.table-responsive -->
+					
+									</div>
+									
+                                </div>
+                                <div class="tab-pane fade" id="win">
+                                    <div class="col-sm-12">
+										
+										<p />
+										<div class="dataTable_wrapper">
+											<table class="table table-striped">
+												<thead>
+													<tr>
+														<th>#</th> 
+														<th>Item</th>
+														<th>Image</th>
+														<th>Start</th>
+														<th>End</th>
+														<th>Minium</th>
+														<th>Status</th>
+														<th>Ended</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr data-th-each="us,i : ${itemsWin}">
+														<td data-th-text="${i.count}">1</td>
+														<td data-th-text="${us.itemTitle}">1</td> 
+														<td><img th:src="@{|/${us.itemImage}|}" class="img-thumbnail"
+															style="width: 60px; height: 30px;" /> 
+												</td>
+														<td data-th-text="${us.bidStartDate}">Dang su dung</td>
+														<td data-th-text="${us.bidEndDate}">false</td>
+														<td data-th-text="|${#numbers.formatDecimal(us.miniumBid, 0, 'POINT', 0, 'POINT')}|">false</td>
+														<td><i th:if="${(us.statusBid) == T(com.asiantech.auction.entity.Item.StatusBid).I}"
+															class="fa  fa-lock fa-fw"></i></td>
+														<td><i th:if="${us.ended} != false"
+															class="glyphicon glyphicon-ok "></i>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+											
+											<span th:text="|Total: ${itemsWin.size()} auctions ${account.userName} winner for Bid.|"> </span>
+											<hr/>
+										</div>
+										<!-- /.table-responsive -->
+					
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                     
+				
+				
+			</div> <!-- /col-sm-10 -->
+
+
+		</div>
+		<!-- end Container -->
+	</div>
+</body>
+</html>

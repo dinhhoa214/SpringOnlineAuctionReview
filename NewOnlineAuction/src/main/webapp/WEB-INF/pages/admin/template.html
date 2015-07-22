@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Admin Home Page</title>
+<link rel="stylesheet" type="text/css"
+	href="css/bootstrap.min.css"
+	th:href="@{/resources/css/bootstrap.min.css}" />
+
+<!-- MetisMenu CSS -->
+<link href="css/admin/metisMenu.min.css" rel="stylesheet"
+	type="text/css" th:href="@{/resources/css/admin/metisMenu.min.css}" />
+
+<!-- Timeline CSS -->
+<link href="css/admin/timeline.css" rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/admin/timeline.css}" />
+
+
+<!-- Custom Fonts -->
+<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/font-awesome.min.css}" />
+<!-- Morris Charts CSS -->
+<link href="css/admin/morris.css" rel="stylesheet"
+	th:href="@{/resources/css/admin/morris.css}" />
+<link rel="stylesheet" type="text/css"
+	href="css/dataTables.bootstrap.css"
+	th:href="@{/resources/css/dataTables.bootstrap.css}" />
+<!-- Custom CSS -->
+<link href="css/admin/sb-admin-2.css" rel="stylesheet" type="text/css"
+	th:href="@{/resources/css/admin/sb-admin-2.css}" />	
+</head>
+<body>
+	<div th:replace="templates/headeradmin :: headeradmin"></div>
+	<div id="page-wrapper">
+    <div class="row"> 
+    	<!-- Content -->
+    </div>
+    <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+	<div th:replace="templates/footeradmin :: footeradmin"></div> 
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+</head>
+<body>
+
+	<div th:fragment="content">
+		<div class="container">
+			<!-- Content Category-->
+			<div class="row">
+				<!-- Bread crumb -->
+				<ol class="breadcrumb">
+					<li><a th:href="@{/index}">Home</a></li>
+					<li><a th:href="@{/user/profile/} + ${#authentication.name}"
+						th:text="${#authentication.name}"> dinhhoa.vta</a></li>
+					<li class="active">New item</li>
+				</ol>
+
+				<div class="col-sm-6">
+					<p class="text-center">
+						<strong>Item for Bid</strong>
+					</p>
+					<!-- <span th:text="| Item ${item.itemTitle} |"> </span> ${item.itemTitle} -->
+					<br />
+					<form class="form-horizontal" id="itemForm"
+						th:action="@{/user/newitem}" th:object="${item}"
+						enctype="multipart/form-data" method="post">
+						<div class="form-group">
+							<label class="control-label col-sm-4">Item title:</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" th:field="*{itemTitle}"
+									placeholder="Item title" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4">Description:</label>
+							<div class="col-sm-6">
+								<textarea class="form-control" rows="3"
+									th:field="*{itemDescription}" placeholder="Item descrption"></textarea>
+							</div>
+							<input type="hidden" th:field="*{statusBid}" th:value="I" />
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4">Category:</label>
+							<div class="col-sm-6">
+								<select th:field="*{category.Id}" class="form-control">
+									<option th:each="cate : ${categories}" th:value="${cate.Id}"
+										th:text="${cate.name}">Options</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4">Image:</label>
+							<div class="col-sm-6">
+								<input type="file" th:field="*{itemImage}" />
+								<p class="help-block">Choose image for Item picture</p>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4">Minium Bid Price:</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" th:field="*{miniumBid}"
+									placeholder="VND" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4">Bid Start Date:</label>
+							<div class="col-sm-6">
+								<!-- <input type="text" class="form-control" th:field="*{bidStartDate}" placeholder="Bid End Date"/> -->
+								<div class="input-group date" id="datetimePicker">
+									<input type="text" class="form-control"
+										th:field="*{bidStartDate}" placeholder="Start Date" /> <span
+										class="input-group-addon"><span
+										class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4">Bid End Date:</label>
+							<div class="col-sm-6">
+								<div class="input-group date" id="bidEndDate">
+									<input type="text" class="form-control"
+										th:field="*{bidEndDate}" placeholder="End Date" /> <span
+										class="input-group-addon"><span
+										class="glyphicon glyphicon-calendar"></span></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4">Bid Icrement:</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control"
+									th:field="*{bidIncremenet}" th:value="10000" />
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-sm-offset-4 col-sm-10">
+								<button type="submit" class="btn btn-success">Save</button>
+								<button type="reset" class="btn btn-success">Reset</button>
+							</div>
+
+						</div>
+					</form>
+				</div>
+				<div class="col-sm-6">
+					<span th:text="|Total: ${items.size()} items you create for Bid.|"> </span>
+					<p />
+					<div class="dataTable_wrapper">
+						<table id="example" class="table table-striped">
+							<thead>
+								<tr>
+									<th>#</th> 
+									<th>Item</th>
+									<th>Image</th>
+									<th>Start</th>
+									<th>End</th>
+									<th>Minium</th>
+									<th>Status</th>
+									<th>Delete</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr data-th-each="us,i : ${items}">
+									<td data-th-text="${i.count}">1</td>
+									<td data-th-text="${us.itemTitle}">1</td> 
+									<td><img th:src="@{|/${us.itemImage}|}" class="img-thumbnail"
+										style="width: 60px; height: 30px;" /> 
+							</td>
+									<td data-th-text="${us.bidStartDate}">Dang su dung</td>
+									<td data-th-text="${us.bidEndDate}">false</td>
+									<td data-th-text="|${#numbers.formatDecimal(us.miniumBid, 0, 'POINT', 0, 'POINT')}|">false</td>
+									<td><i th:if="${(us.statusBid) == T(com.asiantech.auction.entity.Item.StatusBid).I}"
+										class="fa  fa-lock fa-fw"></i></td>
+									<td><a class="fa  fa-remove fa-fw" th:href="@{delete(id=${us.itemId})}"></a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- /.table-responsive -->
+
+				</div>
+			</div>
+		</div>
+		<!-- end Container -->
+		<script type="text/javascript">
+$(document).ready(function() {
+    $('#bidStartDate').datetimepicker();
+    $('#bidEndDate').datetimepicker();
+    
+    $('#itemForm').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: { 
+        	itemTitle: {
+                validators: {
+                    notEmpty: {
+                        message: 'The item title is required and cannot be empty'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 100,
+                        message: 'The item title must be more than 1 and less than 100 characters long'
+                    }
+                }
+            },
+            itemDescription: {
+                validators: {
+                    notEmpty: {
+                        message: 'The item description is required and cannot be empty'
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 1000,
+                        message: 'The item description must be more than 1 and less than 1000 characters long'
+                    }
+                }
+            },
+            miniumBid: {
+                validators: {
+                    lessThan: {
+                    	value: 1000000000,
+                        inclusive: false,
+                        message: 'The minium Bid has to be less than or equals to 1.000.000.000'
+                    },
+                    greaterThan: {
+                    	value: 10000,
+                        inclusive: true,
+                        message: 'The minium Bid has to be greater than 10.000'
+                    }
+                }
+            },	
+            bidStartDate: {
+                validators: {
+                    notEmpty: {
+                        message: 'The date is required and cannot be empty'
+                    },
+                    date: {
+                        format: 'MM/DD/YYYY h:m A'
+                    }
+                }
+            },
+            bidEndDate: {
+                validators: {
+                    notEmpty: {
+                        message: 'The date is required and cannot be empty'
+                    },
+                    date: {
+                        format: 'MM/DD/YYYY h:m A'
+                    }
+                }
+            },
+            bidIncremenet: {
+                validators: {
+                    lessThan: {
+                    	value: 10000000,
+                        inclusive: false,
+                        message: 'The bid Incremenet has to be less than or equals to 10.000.000'
+                    },
+                    greaterThan: {
+                    	value: 10000,
+                        inclusive: true,
+                        message: 'The bid Incremenet has to be greater than 10.000'
+                    }
+                }
+            }
+        }
+    });
+
+    $('#bidStartDate')
+        .on('dp.change dp.show', function(e) {
+            // Validate the date when user change it
+            $('#itemForm').data('bootstrapValidator').revalidateField('bidStartDate');
+            // You also can call it as following:
+            // $('#defaultForm').bootstrapValidator('revalidateField', 'datetimePicker');
+        });
+    $('#bidEndDate')
+    .on('dp.change dp.show', function(e) {
+        // Validate the date when user change it
+        $('#itemForm').data('bootstrapValidator').revalidateField('bidEndDate');
+        // You also can call it as following:
+        // $('#defaultForm').bootstrapValidator('revalidateField', 'datetimePicker');
+    });
+});
+</script>
+		<!-- inclde footer -->
+	</div>
+</body>
+</html>
